@@ -2,44 +2,58 @@
 'use client';
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Image from 'next/image';
+import Chip from '@mui/material/Chip';
+import IconFilePdf from '@/assets/pdfIcon';
+import IconMicrosoftword from '@/assets/wordIcon';
+import IconMp4 from '@/assets/mp4';
+import IconMicrosoftexcel from '@/assets/excelIcon';
+import IconImage from '@/assets/jpgIcon';
+import IconMicrosoftpowerpoint from '@/assets/powerIcon';
+import IconFileZip16 from '@/assets/zipIcon';
+import IconFilePngBox from '@/assets/pngIcon';
+import IconBxFileBlank from '@/assets/defaultIcon';
 
-// Imágenes de las extensiones de archivo desde la web
 const extensionImg = {
-    pdf: '/assets/pdf.svg',
-    doc: '/assets/doc.svg',
-    docx: '/assets/doc.svg',
-    xls: '/assets/xls.svg',
-    xlsx: '/assets/xls.svg',
-    ppt: '/assets/ppt.svg',
-    pptx: '/assets/ppt.svg',
-    jpg: '/assets/jpg.svg',
-    jpeg: '/assets/jpg.svg',
-    png: '/assets/png.svg',
+    pdf: <IconFilePdf />,
+    doc: <IconMicrosoftword />, docx: <IconMicrosoftword />,
+    mp4: <IconMp4 />,
+    xls: <IconMicrosoftexcel />, xlsx: <IconMicrosoftexcel />,
+    ppt: <IconMicrosoftpowerpoint />, pptx: <IconMicrosoftpowerpoint />,
+    jpg: <IconImage />, jpeg: <IconImage />,
+    png: <IconFilePngBox />,
     gif: '/assets/gif.svg',
-    zip: '/assets/zip.svg',
-    rar: '/assets/zip.svg',
-    default: '/assets/file.svg'
+    zip: <IconFileZip16 />,
+    rar: <IconFileZip16 />,
+    default: <IconBxFileBlank />,
 };
 
 const ItemFile = (props) => {
     return (
-        <div className="flex items-center justify-between p-4 border rounded-lg shadow-sm">
-            <Image
-                src={extensionImg[props.fileName.split('.').pop()] || extensionImg.default}
-                alt="file"
-                width={24}
-                height={24}
-            />
-            <div className="flex flex-col ml-2">
-                <p className="text-start text-sm font-semibold text-gray-800">{props.fileName}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{props.fileSize} bytes</p>
+        <li className="flex py-4 first:pt-0 last:pb-0">
+            {extensionImg[props.fileName.split('.').pop()] || extensionImg.default}
+            {props.tag ? (
+                <Chip label={props.tag} size="small" className='ml-3' />
+            ) : (
+                <Chip label="Sin etiqueta" size="small" className='ml-3' />
+            )}
+
+            <div className="ml-3 overflow-hidden">
+                <p className="text-start text-medium font-semibold text-gray-800">{props.fileName}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{props.fileSize} bytes</p>
             </div>
-            <IconButton aria-label="delete" size="small" onClick={props.onRemove}>
-                <DeleteIcon fontSize="small" />
-            </IconButton>
-        </div>
+            {/* Area Icons */}
+            <div className="ml-auto flex items-center">
+                <IconButton aria-label="edit" size="small" className='hover:bg-yellow-500' onClick={props.onEdit}>
+                    <EditIcon fontSize="small" />
+                </IconButton>
+
+                <IconButton aria-label="delete" size="small" onClick={props.onRemove} className='hover:bg-red-500'>
+                    <DeleteIcon fontSize="small" />
+                </IconButton>
+            </div>
+        </li>
     );
 };
 

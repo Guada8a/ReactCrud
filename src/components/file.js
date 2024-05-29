@@ -1,30 +1,13 @@
 // FileComponent.js
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import ItemFile from './itemFile';
 
-const FileComponent = (props) => {
-    const [acceptedFiles, setAcceptedFiles] = useState([]);
+const FileComponent = ({ onDrop }) => {
     const { getRootProps, getInputProps } = useDropzone({
-        onDrop: (files) => {
-            setAcceptedFiles([...acceptedFiles, ...files]);
-        }
+        onDrop
     });
-
-    const handleRemove = (fileToRemove) => {
-        setAcceptedFiles(acceptedFiles.filter(file => file.path !== fileToRemove.path));
-    };
-
-    const files = acceptedFiles.map(file => (
-        <ItemFile
-            key={file.path}
-            fileName={file.path}
-            fileSize={file.size}
-            onRemove={() => handleRemove(file)}
-        />
-    ));
 
     return (
         <section>
@@ -33,16 +16,10 @@ const FileComponent = (props) => {
                     <input {...getInputProps()} />
                     <CloudUploadIcon color='inherit' fontSize='large' />
                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Arrastra y suelta</span> los archivos aquí o <span className="text-blue-500 dark:text-blue-400">selecciona uno</span> desde tu computadora
+                        <span className="font-semibold">Arrastra y suelta</span> los archivos aquí o <span className="text-blue-500 dark:text-blue-400">selecciona uno</span>
                     </p>
                 </div>
             </div>
-            <aside className="mt-4 text-sm text-dark">
-                <h4 className='font-semibold'>Archivos seleccionados</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {files}
-                </div>
-            </aside>
         </section>
     );
 };
