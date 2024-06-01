@@ -1,4 +1,3 @@
-// ItemFile.js
 'use client';
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -29,31 +28,43 @@ const extensionImg = {
     default: <IconBxFileBlank />,
 };
 
+const convertSize = (bytes) => {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+};
+
 const ItemFile = (props) => {
     return (
-        <li className="flex py-4 first:pt-0 last:pb-0">
-            {extensionImg[props.fileName.split('.').pop()] || extensionImg.default}
-            {props.tag ? (
-                <Chip label={props.tag} size="small" className='ml-3' />
-            ) : (
-                <Chip label="Sin etiqueta" size="small" className='ml-3' />
-            )}
-
-            <div className="ml-3 overflow-hidden">
-                <p className="text-start text-medium font-semibold text-gray-800">{props.fileName}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{props.fileSize} bytes</p>
-            </div>
-            {/* Area Icons */}
-            <div className="ml-auto flex items-center">
+        <tr>
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                    <div className="flex-shrink-0 h-10 w-10">
+                        {extensionImg[props.fileName.split('.').pop()] || extensionImg.default}
+                    </div>
+                    {props.tag ? (
+                        <Chip label={props.tag} size="small" className='ml-3' />
+                    ) : (
+                        <Chip label="Sin etiqueta" size="small" className='ml-3' />
+                    )}
+                    <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">{props.fileName}</div>
+                    </div>
+                </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-500 dark:text-gray-400">{convertSize(props.fileSize)}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <IconButton aria-label="edit" size="small" className='hover:bg-yellow-500' onClick={props.onEdit}>
                     <EditIcon fontSize="small" />
                 </IconButton>
-
                 <IconButton aria-label="delete" size="small" onClick={props.onRemove} className='hover:bg-red-500'>
                     <DeleteIcon fontSize="small" />
                 </IconButton>
-            </div>
-        </li>
+            </td>
+        </tr>
     );
 };
 
